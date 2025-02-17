@@ -74,7 +74,11 @@ def compute_embeddings(texts, model_name):
 
 def store_in_qdrant(embeddings, texts, location, collection_name):
     """Stores text chunks and embeddings in Qdrant."""
-    client = QdrantClient(location=location)
+
+
+    # client = QdrantClient(location=location)
+    client = QdrantClient(url="http://localhost:6333")
+    
     client.recreate_collection(collection_name=collection_name, vectors_config={"size": len(embeddings[0]), "distance": "Cosine"})
     
     # points = [
