@@ -7,7 +7,7 @@ from qdrant_client.models import PointStruct
 import sys
 
 # Configurations
-PDF_FILE = "../data/tokio_outubro_2024.pdf"  # Change this to your PDF file
+# PDF_FILE = "../data/tokio_outubro_2024.pdf"  # Change this to your PDF file
 PDF_FILE = "../data/teste.pdf"  # Change this to your PDF file
 QDRANT_LOCATION = "./qdrant_db"  # Persistent storage
 COLLECTION_NAME = "pdf_chunks"
@@ -35,6 +35,7 @@ import unicodedata
 def clean_text(text):
     """Normalize and clean text to avoid encoding issues."""
     text = text.replace("\x00", "")  # Remove null characters
+    text = text.replace("\x2e", "")  # Remove null characters
     text = unicodedata.normalize("NFKC", text)  # Normalize Unicode
     text = text.encode("utf-8", "ignore").decode("utf-8")  # Ignore problematic characters
     return text.strip()
