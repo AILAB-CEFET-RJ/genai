@@ -7,8 +7,8 @@ from qdrant_client.models import PointStruct
 import sys
 
 # Configurations
-# PDF_FILE = "../data/tokio_outubro_2024.pdf"  # Change this to your PDF file
-PDF_FILE = "../data/teste.pdf"  # Change this to your PDF file
+PDF_FILE = "../data/tokio_outubro_2024.pdf"  # Change this to your PDF file
+# PDF_FILE = "../data/teste.pdf"  # Change this to your PDF file
 
 QDRANT_LOCATION = "./qdrant_db"  # Persistent storage
 # QDRANT_LOCATION = ":memory:"  # Persistent storage
