@@ -27,12 +27,15 @@ print('>>> Creating embeddings...')
 MODEL_NAME = 'llama2'
 embeddings = OllamaEmbeddings(model=MODEL_NAME) 
 
+location="./qdrant_db"
+
 print('>>> Storing embeddings in Qdrant...')
 # set up the qdrant database
 qdrant = Qdrant.from_documents(
     docs,
     embeddings,
-    location=":memory:",  # Local mode with in-memory storage only
+    # location=":memory:",  # Local mode with in-memory storage only
+    location=location,  # Local mode with disk storage
     collection_name="my_documents",
 )
 
