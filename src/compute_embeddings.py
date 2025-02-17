@@ -29,11 +29,25 @@ def chunk_text(text, chunk_size, chunk_overlap):
     )
     return splitter.split_text(text)
 
+import unicodedata
+
+def clean_text(text):
+    """Normalize and clean text to avoid encoding issues."""
+    text = text.replace("\x00", "")  # Remove null characters
+    text = unicodedata.normalize("NFKC", text)  # Normalize Unicode
+    text = text.encode("utf-8", "ignore").decode("utf-8")  # Ignore problematic characters
+    return text.strip()
 
 def compute_embeddings(texts, model_name):
-    """Computes embeddings for a list of texts."""
+    """Computes embeddings for a list of cleaned texts."""
     model = SentenceTransformer(model_name)
-    return model.encode(texts, batch_size=16, show_progress_bar=True)
+    cleaned_texts = [clean_text(t) for t in texts]  # Clean each text chunk
+    return model.encode(cleaned_texts, batch_size=16, show_progress_bar=True)
+
+# def compute_embeddings(texts, model_name):
+#     """Computes embeddings for a list of texts."""
+#     model = SentenceTransformer(model_name)
+#     return model.encode(texts, batch_size=16, show_progress_bar=True)
 
 
 def store_in_qdrant(embeddings, texts, location, collection_name):
