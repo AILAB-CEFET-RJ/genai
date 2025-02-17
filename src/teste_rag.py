@@ -1,9 +1,11 @@
-from langchain.document_loaders import PyPDFLoader
+# from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
+
 loader = PyPDFLoader('../data/tokio_outubro_2024.pdf')
 # loader = PyPDFLoader('../data/teste.pdf')
 pages = loader.load()
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter, CharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # define the text splitter
 r_splitter = RecursiveCharacterTextSplitter(
@@ -17,7 +19,8 @@ docs = r_splitter.split_documents(pages)
 
 MODEL_NAME = 'llama2'
 
-from langchain.vectorstores import Qdrant
+# from langchain.vectorstores import Qdrant
+from langchain_community.vectorstores import Qdrant
 
 # set up Ollama Embeddings: https://python.langchain.com/docs/integrations/text_embedding/ollama
 # from langchain.embeddings import OllamaEmbeddings
