@@ -63,8 +63,12 @@ print('>>> Retrieving answer...')
 # Initialize Qdrant client
 qdrant_client = QdrantClient(url="http://localhost:6333")
 
-# Initialize Qdrant retriever (assuming the collection is named "your_collection_name")
-retriever = Qdrant(qdrant_client, collection_name="SegurIA")
+# Initialize HuggingFace embedding model
+from langchain.embeddings.huggingface import HuggingFaceEmbeddings
+embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")  # You can replace with any other HuggingFace model
+
+# Initialize Qdrant retriever
+retriever = Qdrant(qdrant_client, embedding_function=embedding_model, collection_name="SegurIA")
 
 qa_chain_mr = RetrievalQA.from_chain_type(
     llm,
