@@ -48,7 +48,7 @@ print('>>> Creating ChatOllama...')
 # complete list of models available @ Ollama: https://ollama.ai/library
 llm = ChatOllama(model_name=MODEL_NAME, temperature=0)
 
-question = '''
+QUERY = '''
     Considere a contratação de um seguro de condomínio, com várias coberturas, feita por um condomínio vertical residencial, constituído por nove blocos. 
     Dentre as coberturas contratadas, está a cobertura básica ampla. Este seguro, com todas as coberturas contratadas, foi objeto de renovação com a 
     mesma seguradora.
@@ -72,11 +72,21 @@ qdrant = Qdrant(qdrant_client,
                    embeddings=embeddings, 
                    collection_name="SegurIA")
 
-qa_chain_mr = RetrievalQA.from_chain_type(
-    llm,
-    retriever=qdrant.as_retriever(),
-    chain_type="map_reduce"
-)
-result = qa_chain_mr({"query": question})
+retriever = qdrant.as_retriever()
 
-print(result["result"])
+# qa_chain_mr = RetrievalQA.from_chain_type(
+#     llm,
+#     retriever=retriever,
+#     chain_type="map_reduce"
+# )
+# result = qa_chain_mr({"query": question})
+
+# print(result["result"])
+
+
+qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
+
+# QUERY = "WRITE QUERY RELATED TO AN ARTICLE YOU ADDED"
+
+answer = qa.run(QUERY)
+print(answer)
