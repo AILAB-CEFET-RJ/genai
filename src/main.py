@@ -4,40 +4,42 @@ from langchain_community.vectorstores import Qdrant
 # set up Ollama Embeddings: https://python.langchain.com/docs/integrations/text_embedding/ollama
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
+from langchain.chains.retrieval_qa.base import RetrievalQA
+from qdrant_client import QdrantClient
 
-print('>>> Creating PyPDFLoader...')
-loader = PyPDFLoader('../data/tokio_outubro_2024.pdf')
+# print('>>> Creating PyPDFLoader...')
+# loader = PyPDFLoader('../data/tokio_outubro_2024.pdf')
 
-print('>>> Loading document\'s pages...')
-pages = loader.load()
+# print('>>> Loading document\'s pages...')
+# pages = loader.load()
 
-# define the text splitter
-r_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1500,
-    chunk_overlap=200, 
-    separators=["\n\n", "\n", " ", ""]
-)
+# # define the text splitter
+# r_splitter = RecursiveCharacterTextSplitter(
+#     chunk_size=1500,
+#     chunk_overlap=200, 
+#     separators=["\n\n", "\n", " ", ""]
+# )
 
-print('>>> Splitting document into chuncks...')
+# print('>>> Splitting document into chuncks...')
 
-# Create our splits from the PDF
-docs = r_splitter.split_documents(pages)
+# # Create our splits from the PDF
+# docs = r_splitter.split_documents(pages)
 
-print('>>> Creating embeddings...')
+# print('>>> Creating embeddings...')
 MODEL_NAME = 'llama2'
-embeddings = OllamaEmbeddings(model=MODEL_NAME) 
+# embeddings = OllamaEmbeddings(model=MODEL_NAME) 
 
-location="./qdrant_db"
+# location="./qdrant_db"
 
-print('>>> Storing embeddings in Qdrant...')
-# set up the qdrant database
-qdrant = Qdrant.from_documents(
-    docs,
-    embeddings,
-    # location=":memory:",  # Local mode with in-memory storage only
-    location=location,  # Local mode with disk storage
-    collection_name="my_documents",
-)
+# print('>>> Storing embeddings in Qdrant...')
+# # set up the qdrant database
+# qdrant = Qdrant.from_documents(
+#     docs,
+#     embeddings,
+#     # location=":memory:",  # Local mode with in-memory storage only
+#     location=location,  # Local mode with disk storage
+#     collection_name="SegurIA",
+# )
 
 print('>>> Creating ChatOllama...')
 
@@ -57,13 +59,13 @@ question = '''
     '''
 
 print('>>> Retrieving answer...')
-result = llm({"query": question})
-# from langchain.chains.retrieval_qa.base import RetrievalQA
-# qa_chain_mr = RetrievalQA.from_chain_type(
-#     llm,
-#     retriever=qdrant.as_retriever(),
-#     chain_type="map_reduce"
-# )
-# result = qa_chain_mr({"query": question})
+qdrant = QdrantClient(url="http://localhost:6333")
+
+qa_chain_mr = RetrievalQA.from_chain_type(
+    llm,
+    retriever=qdrant.as_retriever(),
+    chain_type="map_reduce"
+)
+result = qa_chain_mr({"query": question})
 
 print(result["result"])
