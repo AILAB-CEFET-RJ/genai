@@ -23,10 +23,11 @@ print('>>> Splitting document into chuncks...')
 # Create our splits from the PDF
 docs = r_splitter.split_documents(pages)
 
+print('>>> Creating embeddings...')
 MODEL_NAME = 'llama2'
-
 embeddings = OllamaEmbeddings(model=MODEL_NAME) 
 
+print('>>> Storing embeddings in Qdrant...')
 # set up the qdrant database
 qdrant = Qdrant.from_documents(
     docs,
