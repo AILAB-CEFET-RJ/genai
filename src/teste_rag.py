@@ -1,4 +1,3 @@
-# from langchain.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Qdrant
@@ -6,9 +5,10 @@ from langchain_community.vectorstores import Qdrant
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
 
-print('>>> Loading document...')
-
+print('>>> Creating PyPDFLoader...')
 loader = PyPDFLoader('../data/tokio_outubro_2024.pdf')
+
+print('>>> Loading document\'s pages...')
 pages = loader.load()
 
 # define the text splitter
@@ -17,6 +17,8 @@ r_splitter = RecursiveCharacterTextSplitter(
     chunk_overlap=200, 
     separators=["\n\n", "\n", " ", ""]
 )
+
+print('>>> Splitting document into chuncks...')
 
 # Create our splits from the PDF
 docs = r_splitter.split_documents(pages)
@@ -33,7 +35,7 @@ qdrant = Qdrant.from_documents(
     collection_name="my_documents",
 )
 
-print('>>> Crating ChatOllama...')
+print('>>> Creating ChatOllama...')
 
 # model name can be any model you have installed with Ollama
 # complete list of models available @ Ollama: https://ollama.ai/library
