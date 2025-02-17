@@ -68,13 +68,13 @@ embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-
 qdrant_client = QdrantClient(url="http://localhost:6333")
 
 # Initialize Qdrant retriever
-retriever = Qdrant(qdrant_client, 
+qdrant = Qdrant(qdrant_client, 
                    embeddings=embeddings, 
                    collection_name="SegurIA")
 
 qa_chain_mr = RetrievalQA.from_chain_type(
     llm,
-    retriever=retriever,
+    retriever=qdrant.as_retriever(),
     chain_type="map_reduce"
 )
 result = qa_chain_mr({"query": question})
