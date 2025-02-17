@@ -59,11 +59,16 @@ question = '''
     '''
 
 print('>>> Retrieving answer...')
-qdrant = QdrantClient(url="http://localhost:6333")
+
+# Initialize Qdrant client
+qdrant_client = QdrantClient(url="http://localhost:6333")
+
+# Initialize Qdrant retriever (assuming the collection is named "your_collection_name")
+retriever = Qdrant(qdrant_client, collection_name="SegurIA")
 
 qa_chain_mr = RetrievalQA.from_chain_type(
     llm,
-    retriever=qdrant.as_retriever(),
+    retriever=retriever,
     chain_type="map_reduce"
 )
 result = qa_chain_mr({"query": question})
