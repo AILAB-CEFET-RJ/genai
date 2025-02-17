@@ -40,17 +40,34 @@ def clean_text(text):
     text = text.encode("utf-8", "ignore").decode("utf-8")  # Ignore problematic characters
     return text.strip()
 
-def compute_embeddings(texts, model_name):
-    """Computes embeddings for a list of cleaned texts."""
-    model = SentenceTransformer(model_name)
-    cleaned_texts = [clean_text(t) for t in texts]  # Clean each text chunk
-    return model.encode(cleaned_texts, batch_size=16, show_progress_bar=True)
+# def compute_embeddings(texts, model_name):
+#     """Computes embeddings for a list of cleaned texts."""
+#     model = SentenceTransformer(model_name)
+#     cleaned_texts = [clean_text(t) for t in texts]  # Clean each text chunk
+#     return model.encode(cleaned_texts, batch_size=16, show_progress_bar=True)
 
 # def compute_embeddings(texts, model_name):
 #     """Computes embeddings for a list of texts."""
 #     model = SentenceTransformer(model_name)
 #     return model.encode(texts, batch_size=16, show_progress_bar=True)
 
+def compute_embeddings(texts, model_name):
+    """Computes embeddings for a list of texts and verifies output."""
+    model = SentenceTransformer(model_name)
+    cleaned_texts = [t.strip() for t in texts]  # Strip whitespace
+
+    # Debug: Print first 5 text chunks
+    print("🔍 Sample text chunks before embedding:")
+    for i, text in enumerate(cleaned_texts[:5]):
+        print(f"Chunk {i+1}: {text[:100]}...")  # Print first 100 chars
+
+    embeddings = model.encode(cleaned_texts, batch_size=16, show_progress_bar=True)
+
+    # Debug: Check if embeddings are correct
+    print("✅ Successfully computed embeddings!")
+    print(f"Embedding shape: {len(embeddings)}, {len(embeddings[0])} (First vector)")
+
+    return embeddings
 
 def store_in_qdrant(embeddings, texts, location, collection_name):
     """Stores text chunks and embeddings in Qdrant."""
