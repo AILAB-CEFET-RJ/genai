@@ -20,7 +20,8 @@ MODEL_NAME = 'llama2'
 from langchain.vectorstores import Qdrant
 
 # set up Ollama Embeddings: https://python.langchain.com/docs/integrations/text_embedding/ollama
-from langchain.embeddings import OllamaEmbeddings
+# from langchain.embeddings import OllamaEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
 embeddings = OllamaEmbeddings(model=MODEL_NAME) 
 
 # set up the qdrant database
