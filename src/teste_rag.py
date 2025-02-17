@@ -43,21 +43,25 @@ from langchain_community.chat_models import ChatOllama
 llm = ChatOllama(model_name=MODEL_NAME, temperature=0)
 
 
-question = "What are the top frameworks developers use to build LLM apps?"
+# question = "What are the top frameworks developers use to build LLM apps?"
 
 question = '''
-    Considere a contratação de um seguro de condomínio, com várias coberturas, feita por um condomínio vertical residencial, constituído por nove blocos. Dentre as coberturas contratadas, está a cobertura básica ampla. Este seguro, com todas as coberturas contratadas, foi objeto de renovação com a mesma seguradora.
+    Considere a contratação de um seguro de condomínio, com várias coberturas, feita por um condomínio vertical residencial, constituído por nove blocos. 
+    Dentre as coberturas contratadas, está a cobertura básica ampla. Este seguro, com todas as coberturas contratadas, foi objeto de renovação com a 
+    mesma seguradora.
     1.	No caso desmoronamento parcial na cobertura e nos andares imediatamente abaixo, haveria cobertura do seguro? Justifique.
     2.	No caso de ter sido realizada obra na cobertura que teve desabamento parcial, dentro das regras do condomínio e da prefeitura municipal, haveria cobertura? Justifique.
     3.	No caso de incêndio em carro elétrico ocorrido na garagem subterrânea do condomínio, com incêndio e explosão, caso haja comprometimento da laje, haverá cobertura do seguro? Justifique.
     '''
 
-from langchain.chains.retrieval_qa.base import RetrievalQA
-qa_chain_mr = RetrievalQA.from_chain_type(
-    llm,
-    retriever=qdrant.as_retriever(),
-    chain_type="map_reduce"
-)
-result = qa_chain_mr({"query": question})
+print('Retrieving answer...')
+result = llm({"query": question})
+# from langchain.chains.retrieval_qa.base import RetrievalQA
+# qa_chain_mr = RetrievalQA.from_chain_type(
+#     llm,
+#     retriever=qdrant.as_retriever(),
+#     chain_type="map_reduce"
+# )
+# result = qa_chain_mr({"query": question})
 
 print(result["result"])
