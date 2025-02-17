@@ -6,6 +6,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.chat_models import ChatOllama
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from qdrant_client import QdrantClient
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 # print('>>> Creating PyPDFLoader...')
 # loader = PyPDFLoader('../data/tokio_outubro_2024.pdf')
@@ -60,16 +61,16 @@ question = '''
 
 print('>>> Retrieving answer...')
 
+# The embedding model that will be used by the collection
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")  # You can replace with any other HuggingFace model
+
 # Initialize Qdrant client
 qdrant_client = QdrantClient(url="http://localhost:6333")
 
-# Initialize HuggingFace embedding model
-# from langchain.embeddings.huggingface import HuggingFaceEmbeddings
-from langchain_community.embeddings import HuggingFaceEmbeddings
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")  # You can replace with any other HuggingFace model
-
 # Initialize Qdrant retriever
-retriever = Qdrant(qdrant_client, embedding_function=embedding_model, collection_name="SegurIA")
+retriever = Qdrant(qdrant_client, 
+                   embeddings=embeddings, 
+                   collection_name="SegurIA")
 
 qa_chain_mr = RetrievalQA.from_chain_type(
     llm,
