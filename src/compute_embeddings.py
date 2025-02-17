@@ -74,11 +74,21 @@ def store_in_qdrant(embeddings, texts, location, collection_name):
     client = QdrantClient(location=location)
     client.recreate_collection(collection_name=collection_name, vectors_config={"size": len(embeddings[0]), "distance": "Cosine"})
     
+    # points = [
+    #     PointStruct(id=int(hashlib.md5(text.encode()).hexdigest(), 16) % (10**9),
+    #                 vector=embeddings[i],
+    #                 payload={"text": texts[i]})
+    #     for i in range(len(texts))
+    # ]
+    from hashlib import md5
+
     points = [
-        PointStruct(id=int(hashlib.md5(text.encode()).hexdigest(), 16) % (10**9),
-                    vector=embeddings[i],
-                    payload={"text": texts[i]})
-        for i in range(len(texts))
+        PointStruct(
+            id=int(md5(text.encode("utf-8")).hexdigest(), 16) % (10**9),  # Ensure valid ID
+            vector=embeddings[i],
+            payload={"text": text}
+        )
+        for i, text in enumerate(texts)
     ]
     
     client.upsert(collection_name=collection_name, points=points)
