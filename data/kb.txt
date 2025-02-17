@@ -1,0 +1,27 @@
+### Mock Knowledge Base for AI and Bayesian Inference
+
+Bayesian inference is a method of statistical inference in which Bayes' theorem is used to update the probability of a hypothesis as more evidence or information becomes available. It is widely used in machine learning, AI, and decision-making systems. 
+
+Applications of Bayesian inference include:
+- Spam filtering
+- Medical diagnosis
+- Predictive modeling
+- Reinforcement learning
+
+Deep learning is a subset of machine learning that involves neural networks with many layers (deep neural networks). It has revolutionized fields such as computer vision, natural language processing, and robotics. 
+
+Recent advancements in deep learning include:
+- Transformer architectures (e.g., BERT, GPT)
+- Self-supervised learning
+- Vision transformers (ViTs)
+- Large language models (LLMs) for AI agents
+
+AI agents are intelligent systems that perceive their environment, make decisions, and take actions. AI agents can be rule-based, data-driven, or use deep reinforcement learning. They are widely used in automation, virtual assistants, and robotics.
+
+Types of AI agents:
+- Reactive Agents: Do not use past memory (e.g., chess-playing AI)
+- Goal-Based Agents: Use search and planning to achieve objectives
+- Learning Agents: Improve over time with experience (e.g., reinforcement learning models)
+- Conversational Agents: Utilize LLMs for natural language interaction (e.g., ChatGPT)
+
+Hybrid memory in AI systems combines short-term memory (e.g., ConversationBufferMemory) and long-term memory (e.g., VectorStoreRetrieverMemory) to enable contextual understanding over extended interactions.
