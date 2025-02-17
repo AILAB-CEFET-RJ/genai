@@ -74,6 +74,9 @@ qdrant = Qdrant(qdrant_client,
 
 retriever = qdrant.as_retriever()
 
+print(retriever)
+print("####")
+
 # qa_chain_mr = RetrievalQA.from_chain_type(
 #     llm,
 #     retriever=retriever,
