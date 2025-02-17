@@ -62,7 +62,8 @@ QUERY = '''
 print('>>> Retrieving answer...')
 
 # The embedding model that will be used by the collection
-embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")  # You can replace with any other HuggingFace model
+# This can be replaced with any other HuggingFace model
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2") 
 
 # Initialize Qdrant client
 qdrant_client = QdrantClient(url="http://localhost:6333")
