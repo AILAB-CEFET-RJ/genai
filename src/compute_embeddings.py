@@ -7,7 +7,7 @@ from qdrant_client.models import PointStruct
 import sys
 
 # Configurations
-PDF_FILE = "tokio_outubro_2024.pdf"  # Change this to your PDF file
+PDF_FILE = "../data/tokio_outubro_2024.pdf"  # Change this to your PDF file
 QDRANT_LOCATION = "./qdrant_db"  # Persistent storage
 COLLECTION_NAME = "pdf_chunks"
 CHUNK_SIZE = 500  # Adjust as needed
