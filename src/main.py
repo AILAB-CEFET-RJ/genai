@@ -8,6 +8,10 @@ from langchain.chains.retrieval_qa.base import RetrievalQA
 from qdrant_client import QdrantClient
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
+from langchain.globals import set_verbose, set_debug
+set_debug(True)
+set_verbose(True)
+
 # print('>>> Creating PyPDFLoader...')
 # loader = PyPDFLoader('../data/tokio_outubro_2024.pdf')
 
@@ -78,19 +82,25 @@ retriever = qdrant.as_retriever()
 print(retriever)
 print("####")
 
-# qa_chain_mr = RetrievalQA.from_chain_type(
-#     llm,
-#     retriever=retriever,
-#     chain_type="map_reduce"
-# )
-# result = qa_chain_mr({"query": question})
-
-# print(result["result"])
+QUERY = "O que é SUSEP?"
 
 
-qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
+qa_chain_mr = RetrievalQA.from_chain_type(
+    llm,
+    retriever=retriever,
+    chain_type="map_reduce"
+)
+result = qa_chain_mr({"query": QUERY})
 
-# QUERY = "WRITE QUERY RELATED TO AN ARTICLE YOU ADDED"
+print(result["result"])
 
-answer = qa.run(QUERY)
-print(answer)
+# from langchain.callbacks import StdOutCallbackHandler
+# handler = StdOutCallbackHandler()
+
+# qa = RetrievalQA.from_chain_type(llm=llm, 
+#                                  chain_type="stuff", 
+#                                  callbacks=[handler],
+#                                  retriever=retriever)
+
+# answer = qa.run(QUERY)
+# print(answer)
