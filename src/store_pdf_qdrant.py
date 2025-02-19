@@ -3,7 +3,9 @@ import pdfplumber
 # from llama_index.node_parser import SimpleNodeParser
 from llama_index.core.node_parser import SimpleNodeParser
 
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+# from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from langchain_huggingface.embeddings.huggingface import HuggingFaceEmbeddings
+
 from qdrant_client import QdrantClient
 from qdrant_client.models import PointStruct, Distance, VectorParams
 import hashlib
@@ -28,7 +30,7 @@ def generate_id(text):
 QDRANT_HOST = "localhost"  # Change to the actual Qdrant host if needed
 QDRANT_PORT = 6333
 COLLECTION_NAME = "pdf_embeddings"
-EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+ENCODER = "sentence-transformers/all-MiniLM-L6-v2"
 
 client = QdrantClient(host=QDRANT_HOST, port=QDRANT_PORT)
 
@@ -38,10 +40,12 @@ if COLLECTION_NAME not in [c.name for c in client.get_collections().collections]
         collection_name=COLLECTION_NAME,
         vectors_config=VectorParams(size=768, distance=Distance.COSINE),  # Adjust size to match embedding model
     )
+else:
+    print(f"Collection {COLLECTION_NAME} already exists!")
 
 # Load embedding model
 # embed_model = HuggingFaceEmbedding(model_name="hkunlp/instructor-xl")
-embed_model = HuggingFaceEmbedding(model_name=EMBEDDING_MODEL)
+embed_model = HuggingFaceEmbedding(model_name=ENCODER)
 
 # Load PDF and extract text
 pdf_path = "../data/tokio_outubro_2024.pdf"  # Change to your PDF file path
