@@ -172,3 +172,4 @@ cython_debug/
 
 
 python/
+aws_keys.sh
