@@ -21,7 +21,7 @@ for summary in response["modelSummaries"]:
 # modelId obtained from printing out modelIds in previous step
 # modelId = 'anthropic.claude-v2:1'
 # modelId = 'meta.llama3-3-70b-instruct-v1:0'
-model_id = "arn:aws:bedrock:us-east-1:816795924256:inference-profile/us.meta.llama3-1-70b-instruct-v1:0"
+modelId = "arn:aws:bedrock:us-east-1:816795924256:inference-profile/us.meta.llama3-1-70b-instruct-v1:0"
 
 ### parameters for the LLM to control text-generation
 # temperature increases randomness as it increases
